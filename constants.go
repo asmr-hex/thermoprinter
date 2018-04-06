@@ -1,7 +1,11 @@
 package thermoprinter
 
+import "time"
+
 const (
-	DefaultBaudRate = 19200
+	DefaultBaudRate           = 19200
+	DefaultSerialPortName     = "/dev/serial1"
+	DefaultWaitTimeAfterWrite = time.Millisecond * 300
 
 	// ASCII codes
 	ASCII_TAB = "\t" // horizontal tab
