@@ -6,8 +6,17 @@ import (
 )
 
 func (p *Printer) Write(s string) error {
+	var (
+		err error
+	)
+
+	// write character by character
 	for _, c := range strings.Split(s, "") {
-		p.writeBytes([]byte(c))
+		err = p.writeBytes([]byte(c))
+		if err != nil {
+			return err
+		}
+
 		if c == "\n" || p.column == MaxColumn {
 			p.column = 0
 		} else {
@@ -21,13 +30,22 @@ func (p *Printer) Write(s string) error {
 // text weight modes, etc. It is not exposed as a public method since
 // there are higher level methods which wrap this.
 func (p *Printer) writeBytes(bytes []byte) error {
+	var (
+		nBytes int
+		err    error
+	)
+
+	// block until we can write
 	<-p.writeReady
 
-	nBytes, err := p.stream.Write(bytes)
+	// write to serial stream
+	nBytes, err = p.stream.Write(bytes)
 	if err != nil {
+		p.readyAfter <- 0
 		return err
 	}
 
+	// reset time to wait before next write
 	p.readyAfter <- nBytes
 
 	return nil
