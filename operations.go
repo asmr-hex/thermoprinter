@@ -26,6 +26,16 @@ func (p *Printer) Write(s string) error {
 	return nil
 }
 
+// feed n lines.
+func (p *Printer) Feed(n int) error {
+	err := p.writeBytes([]byte{ASCII_ESC, byte('d'), byte(n)})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // writing bytes is used for settings modes on the printer, e.g. bold
 // text weight modes, etc. It is not exposed as a public method since
 // there are higher level methods which wrap this.

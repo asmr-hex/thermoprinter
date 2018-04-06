@@ -14,7 +14,8 @@ func MainTest(m *testing.M) {
 func TestThermoPrinter(t *testing.T) {
 	printer := NewPrinter()
 
-	err := printer.Write("hello world.")
+	// err := printer.Write("hello world.")
+	err := printer.Feed(2)
 	if err != nil {
 		t.Fatal(err)
 	}
