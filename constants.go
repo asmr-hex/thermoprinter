@@ -5,7 +5,9 @@ import "time"
 const (
 	DefaultBaudRate           = 19200
 	DefaultSerialPortName     = "/dev/serial1"
-	DefaultWaitTimeAfterWrite = time.Millisecond * 300
+	DefaultWaitTimeAfterWrite = time.Millisecond * 10
+
+	MaxColumn = 32
 
 	// ASCII codes
 	ASCII_TAB = "\t" // horizontal tab

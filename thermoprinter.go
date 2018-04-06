@@ -14,13 +14,24 @@ type Printer struct {
 	// since the printer depends on physical components, we need to wait a
 	// reasonable time after each write is issued s.t. the printer can physically
 	// carry out the operations. The default is 300 milliseconds.
-	WaitTimeAfterWrite time.Time
+	WaitTimeAfterWrite time.Duration
 	// serial port device name. On Raspberry Pi 3, this is typically /dev/serial1
 	// but on older models it could be /dev/ttyS0 or /dev/AMA0
 	SerialPortName string
+
 	// serial port used for UART comminucation, acts as a stream for reading
 	// and writing bytes.
-	Stream *serial.Port
+	stream *serial.Port
+	// a channel which is written to once the printer is ready to be issued another
+	// operation of bytes.
+	writeReady chan bool
+	// resets the write timeout scaled by the number of bytes just written.
+	readyAfter chan int
+
+	// the current column the printer head is on.
+	column int
+	// the previous byte written.
+	prevByte byte
 }
 
 type PrinterOptions struct {
@@ -28,7 +39,7 @@ type PrinterOptions struct {
 	SerialPortName string
 }
 
-func NewPrinter(options ...PrinterOptions) *Printer {
+func NewPrinter(options ...*PrinterOptions) *Printer {
 	var (
 		err error
 	)
@@ -50,7 +61,7 @@ func NewPrinter(options ...PrinterOptions) *Printer {
 	}
 
 	// open stream
-	printer.Stream, err = serial.OpenPort(
+	printer.stream, err = serial.OpenPort(
 		&serial.Config{
 			Name: printer.SerialPortName,
 			Baud: printer.BaudRate,
@@ -59,6 +70,12 @@ func NewPrinter(options ...PrinterOptions) *Printer {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	// initialize printer
+	printer.init()
+
+	// begin handling writes in the background
+	go printer.handleWriteTiming()
 
 	return printer
 }
