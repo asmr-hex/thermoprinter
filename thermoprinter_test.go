@@ -6,7 +6,7 @@ import (
 )
 
 func MainTest(m *testing.M) {
-	retCode := m.run()
+	retCode := m.Run()
 
 	os.Exit(retCode)
 }

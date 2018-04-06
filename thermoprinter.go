@@ -51,6 +51,8 @@ func NewPrinter(options ...*PrinterOptions) *Printer {
 	printer := &Printer{
 		BaudRate:       DefaultBaudRate,
 		SerialPortName: DefaultSerialPortName,
+		writeReady:     make(chan bool),
+		readyAfter:     make(chan int),
 	}
 
 	// apply overrides if options are provided
