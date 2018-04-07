@@ -76,11 +76,12 @@ func NewPrinter(options ...*PrinterOptions) *Printer {
 		log.Fatal(err)
 	}
 
+	// begin handling writes in the background
+	// its important that this occurs before we init otherwise a deadlock will occur.
+	go printer.handleWriteTiming()
+
 	// initialize printer
 	printer.init()
-
-	// begin handling writes in the background
-	go printer.handleWriteTiming()
 
 	return printer
 }
