@@ -32,6 +32,9 @@ type Printer struct {
 	column int
 	// the previous byte written.
 	prevByte byte
+
+	// byte representing print mode
+	printMode byte
 }
 
 type PrinterOptions struct {

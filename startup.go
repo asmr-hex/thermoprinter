@@ -21,4 +21,9 @@ func (p *Printer) init() {
 		log.Fatal(err)
 	}
 
+	// we want to print upsidedown since its better
+	err = p.UpsideDownOn()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

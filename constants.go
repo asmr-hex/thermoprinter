@@ -18,4 +18,7 @@ const (
 	ASCII_ESC = 27   // escape
 	ASCII_FS  = 28   // field separator
 	ASCII_GS  = 29   // group separator
+
+	// print mode bit masks
+	UpsideDownMask = (1 << 2)
 )
