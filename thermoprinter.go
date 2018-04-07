@@ -56,6 +56,7 @@ func NewPrinter(options ...*PrinterOptions) *Printer {
 		SerialPortName: DefaultSerialPortName,
 		writeReady:     make(chan bool),
 		readyAfter:     make(chan int),
+		printMode:      0,
 	}
 
 	// apply overrides if options are provided

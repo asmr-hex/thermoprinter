@@ -11,9 +11,9 @@ func (p *Printer) init() {
 		err error
 	)
 
-	// we need to allow the printer at least 0.5 seconds of uptime
+	// we need to allow the printer at least 0.01 seconds of uptime
 	// before it can get data.
-	time.Sleep(time.Millisecond * 500)
+	time.Sleep(time.Millisecond * 10)
 
 	// flush the stream before using.
 	err = p.stream.Flush()
