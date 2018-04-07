@@ -4,7 +4,7 @@ import "time"
 
 const (
 	DefaultBaudRate           = 19200
-	DefaultSerialPortName     = "/dev/serial1"
+	DefaultSerialPortName     = "/dev/serial0"
 	DefaultWaitTimeAfterWrite = time.Millisecond * 10
 
 	MaxColumn = 32

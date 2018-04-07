@@ -20,4 +20,5 @@ func (p *Printer) init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
